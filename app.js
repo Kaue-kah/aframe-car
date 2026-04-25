@@ -25,18 +25,18 @@ function keyPressed(entrada){
 
 function keyOut(entrada){
     //frente e trás
-    if (entrada.key == 'w'){
+    if (entrada.key == 'w' || entrada.key == 'W'){
         w = false;
     }
-    if (entrada.key == 's'){
+    if (entrada.key == 's' || entrada.key == 'S'){
         s = false;
     }
     
     //esquerda e direita
-    if (entrada.key == 'a'){
+    if (entrada.key == 'a' || entrada.key == 'A'){
         a = false;
     }
-    if (entrada.key == 'd'){
+    if (entrada.key == 'd' || entrada.key == 'D'){
         d = false;
     }
 }
