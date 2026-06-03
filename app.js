@@ -118,7 +118,7 @@ function update() {
 
     pontuacao.innerText = `${pontos}`;
     velocidade.innerText = `${Math.pow((vel * (100 / 4)), 2).toFixed(0)} NPx/m`;
-    inclinacao.innerText = `${(rotacao * (180 / Math.PI)).toFixed(2)}°`;
+    taxaInclinacao .innerText = `${(rotacao * (180 / Math.PI)).toFixed(2)}°`;
     checarColetaveis();
     requestAnimationFrame(update);
 }
