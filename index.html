@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,7 +9,14 @@
       <h1 style="margin: 0; font-family: 'Segoe UI'; color:blueviolet">Pontuação: <span id="pontos">0</span></h1>
       <h1 style="margin: 0; color: yellow; font-family: 'Segoe UI';">Velocidade: <span id="velocidade">0 Px/s</span></h1>
       <h1 style="margin: 0; color: yellow; font-family: 'Segoe UI';">Inclinação: <span id="inclinacao">0 Px/s</span></h1>
+      <p id="status" style="margin: 5px 0 0 0; font-weight: bold; color: orange;">Carregando modelo de IA...</p>
     </header>
+    
+    <div style="position: fixed; bottom: 10px; right: 10px; width: 200px; height: 150px; border: 2px solid blueviolet; border-radius: 8px; overflow: hidden; z-index: 100; background: black;">
+        <video id="webcam" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
+        <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: scaleX(-1);"></canvas>
+    </div>
+
     <a-scene physics="gravity: 0" keyboard-shortcuts="" screenshot="" xr-mode-ui="" device-orientation-permission-ui="">
       <a-plane static-body src="img/pista.jpg" position="0 0 0" rotation="-90 0 0" width="200" height="200" color="#ffffff"></a-plane>
       <!-- Obstáculos -->
@@ -38,7 +44,7 @@
       </a-entity>
 
       <a-sky color="#ECECEC" src="img/ceu.jpg"></a-sky>
-      <script src="app.js"></script>
+      <script src="app.js" type="module"></script>
     </a-scene>
   </body>
 
