@@ -14,7 +14,7 @@ let w = false, s = false, a = false, d = false;
 let pontos = 0;
 let vel = 0.1;
 let rotacao = 0;
-// let inclinacaoVolante = 0;
+let inclinacaoVolante = 1;
 
 
 let handLandmarker = null;
@@ -102,7 +102,9 @@ function detectarMaos(){
         }
     });
 
-    
+
+
+ /// CONTROLE COM AS MÃOS   
 
     if (maos.length > 1) {        
         const mao1 = maos[0];
@@ -119,7 +121,7 @@ function detectarMaos(){
             const yDireita = maoDireita[4].y;
             const yEsquerda = maoEsquerda[4].y;
             
-            if (Math.abs(yDireita - yEsquerda) > 0.05) {
+            if (Math.abs(yDireita - yEsquerda) > 0.08) {
                 if (yDireita < yEsquerda) {
                     d = true;
                     a = false;
@@ -151,7 +153,6 @@ function detectarMaos(){
     }
 
     requestAnimationFrame(detectarMaos);
-
 }
 
 
@@ -217,8 +218,8 @@ function update() {
     if (a == false && rotacao > 0) rotacao -= 0.001;
     if (d == false && rotacao < 0) rotacao += 0.001;
     
-    if (a) { if (rotacao < 0.018) rotacao += 0.001;}
-    if (d){ if (rotacao > -0.018) rotacao -= 0.001;}
+    if (a) { if (rotacao < 0.028) rotacao += 0.004;}
+    if (d){ if (rotacao > -0.028) rotacao -= 0.004;}
 
     if (w){if (vel < 0.4) vel += 0.2;}
     if (s){if (vel > -0.4) vel -= 0.2;}
