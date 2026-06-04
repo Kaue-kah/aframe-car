@@ -16,7 +16,6 @@ let vel = 0.1;
 let rotacao = 0;
 let inclinacaoVolante = 1;
 
-
 let handLandmarker = null;
 let maos = [];
 
@@ -30,29 +29,27 @@ const coletaveis = [
     document.getElementById("obs4"),
 ];
 
-async function carregarModelo() {
-    try {
-        const vision = await FilesetResolver.forVisionTasks(
-            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
-        );
+try {
+    const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+    );
 
-        handLandmarker = await HandLandmarker.createFromOptions(vision, {
-            baseOptions: {
-                modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-                delegate: "GPU"
-            },
-            runningMode: "VIDEO",
-            numHands: 2
-        });
+    handLandmarker = await HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+            delegate: "GPU"
+        },
+        runningMode: "VIDEO",
+        numHands: 2
+    });
 
-        statusTexto.innerText = "Carregado";
-        statusTexto.style.color = "green";
+    statusTexto.innerText = "Carregado";
+    statusTexto.style.color = "green";
 
-    } catch (erro) {
-        statusTexto.innerText = "Erro ao carregar";
-        statusTexto.style.color = "red";
-        console.error(erro);
-    }
+} catch (erro) {
+    statusTexto.innerText = "Erro ao carregar";
+    statusTexto.style.color = "red";
+    console.error(erro);
 }
 
 function iniciarCamera() {
@@ -70,7 +67,6 @@ video.addEventListener("loadeddata", () => {
     detectarMaos();
 });
 
-
 function detectarMaos(){
     if (!handLandmarker){
         requestAnimationFrame(detectarMaos);
@@ -81,8 +77,6 @@ function detectarMaos(){
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    
 
     const estadoAtual = performance.now();
     const resultado = handLandmarker.detectForVideo(video, estadoAtual);
@@ -139,7 +133,6 @@ function detectarMaos(){
         } else {
             w = false;
             console.log("desativou");
-
         }
     } 
     else {
@@ -257,7 +250,6 @@ function verificarMaoFechada(mao) {
 
     return acimaIndicador || acimaMedio || acimaAnelar || acimaMinimo;
 }
-
 
 iniciarCamera();
 carregarModelo();
