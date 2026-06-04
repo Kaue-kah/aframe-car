@@ -45,11 +45,11 @@ async function carregarModelo() {
             numHands: 2
         });
 
-        statusTexto.innerText = "Modelo Carregado! Pronto para detetar.";
+        statusTexto.innerText = "Carregado";
         statusTexto.style.color = "green";
 
     } catch (erro) {
-        statusTexto.innerText = "Erro ao carregar o modelo de IA.";
+        statusTexto.innerText = "Erro ao carregar";
         statusTexto.style.color = "red";
         console.error(erro);
     }
@@ -102,10 +102,7 @@ function detectarMaos(){
         }
     });
 
-
-
  /// CONTROLE COM AS MÃOS   
-
     if (maos.length > 1) {        
         const mao1 = maos[0];
         const mao2 = maos[1];
@@ -250,15 +247,12 @@ function update() {
     requestAnimationFrame(update);
 }
 
-function verificarMaoFechada(mao<<<<<<< HEAD
-    velocidade.innerText = `${((vel / 0.4) * 100).toFixed(0)} km/h`;    
-    taxaInclinacao.innerText = `${(rotacao * (180 / Math.PI)).toFixed(2)}°`;
+function verificarMaoFechada(mao) {
+    const yPolegar = mao[4].y;
 
-=======
-    velocidade.innerText = `${Math.pow((vel * (100 / 4)), 2).toFixed(0)} NPx/m`;
-    taxaInclinacao .innerText = `${(rotacao * (180 / Math.PI)).toFixed(2)}°`;
->>>>>>> c52fd16a00c031d7ad1aac4235947788a87b82f1
-    = yPolegar < mao[16].y;
+    const acimaIndicador = yPolegar < mao[8].y;
+    const acimaMedio     = yPolegar < mao[12].y;
+    const acimaAnelar    = yPolegar < mao[16].y;
     const acimaMinimo    = yPolegar < mao[20].y;
 
     return acimaIndicador || acimaMedio || acimaAnelar || acimaMinimo;
