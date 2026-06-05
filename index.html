@@ -3,31 +3,60 @@
   <head>
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <!-- SCRIPT PEGO NO GEMINI IA, USADO PARA EVITAR DISTORÇÃO NA PIXEL ART -->
+    <script>
+      AFRAME.registerComponent('pixel-art', {
+        init: function () {
+          this.el.addEventListener('materialtextureloaded', () => {
+            const mesh = this.el.getObject3D('mesh');
+            if (mesh && mesh.material && mesh.material.map) {
+              mesh.material.map.magFilter = THREE.NearestFilter;
+              mesh.material.map.minFilter = THREE.NearestFilter;
+              mesh.material.map.needsUpdate = true;
+            }
+          });
+        }
+      });
+    </script>
   </head>
   <body>
-    <header style="position: fixed; top: 0; left: 0; width: 100%; background: rgba(0,0,0,0.1); color: white; font-family: Arial; font-size: 16px; padding: 10px; z-index: 100;">
-      <h1 style="margin: 0; font-family: 'Segoe UI'; color:blueviolet">Pontuação: <span id="pontos">0</span></h1>
-      <h1 style="margin: 0; color: yellow; font-family: 'Segoe UI';">Velocidade: <span id="velocidade">0 Px/s</span></h1>
-      <h1 style="margin: 0; color: yellow; font-family: 'Segoe UI';">Inclinação: <span id="inclinacao">0 Px/s</span></h1>
+    <header style="position: fixed; top: 0; left: 0; width: auto; color: white; font-family: Arial; font-size: 16px; padding: 14px; z-index: 100;">
+      <h1 style="margin: 0; padding: 10px; border-radius:20px; background-color: black; font-family: 'Press Start 2P', monospace; font-size: 58px; color:white">Pontuação: <span id="pontos">0/13</span></h1>
+      <h1 style="margin: 0; padding: 5px; border-radius:20px; color: whitesmoke; font-family: 'Segoe UI';">Velocidade: <span id="velocidade">0 Px/s</span></h1>
+      <h1 style="margin: 0; padding: 5px; border-radius:20px; color: whitesmoke; font-family: 'Segoe UI';">Inclinação: <span id="inclinacao">0 Px/s</span></h1>
       <p id="status" style="margin: 5px 0 0 0; font-weight: bold; color: orange;">Carregando...</p>
     </header>
     
-    <div style="position: fixed; bottom: 10px; right: 10px; width: 200px; height: 150px; border: 2px solid blueviolet; border-radius: 8px; overflow: hidden; z-index: 100; background: black;">
+    
+    <div style="position: fixed; bottom: 10px; right: 10px; width: 400px; height: 250px; border: 2px solid blueviolet; border-radius: 8px; overflow: hidden; z-index: 100; background: black;">
         <video id="webcam" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
         <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: scaleX(-1);"></canvas>
     </div>
 
     <a-scene physics="gravity: 0" keyboard-shortcuts="" screenshot="" xr-mode-ui="" device-orientation-permission-ui="">
-      <a-plane static-body src="img/pista.jpg" position="0 0 0" rotation="-90 0 0" width="400" height="400" color="#ffffff"></a-plane>
+      <!-- <a-plane static-body src="img/NovaPista.png" position="0 0 0" rotation="-90 0 0" width="512" height="416" color="#ffffff"></a-plane> -->
+      <a-plane pixel-art static-body src="img/NovaPista.png" position="0 0 0" rotation="-90 0 0" width="512" height="416" color="#ffffff"></a-plane>
       <!-- Obstáculos -->
       <a-box static-body id="obs1" position="5 0.5 -3"  width="1" height="1" depth="1" color="orange"></a-box>
       <a-box static-body id="obs2" position="-4 0.5 2"  width="1" height="1" depth="1" color="red"></a-box>
+
       <!-- Coletáveis -->
-      <a-box static-body id="obs3" position="2 0.5 -1"  width="1" height="1" depth="1" color="green"></a-box>
-      <a-box static-body id="obs4" position="-1 0.5 4"  width="1" height="1" depth="1" color="blue"></a-box>
-      <!-- Carro -->
-      <a-entity dynamic-body="mass: 1; linearDamping: 1; angularDamping: 1" position="1.4711 0.43002 -3.052" rotation="0 90 0" id="carro">    
-          <a-box id="hitbox" width="1" height="0.5" depth="2" position="-0.08128 0.04736 0.00866" rotation="0 90 0" color="#ffffff" material="src: img/pintura.jpg" geometry="height: 0.39; width: 1.1"></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c2" position="205.73217 1.69044 -40.0421" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c3" position="206.89163 1.13069 -145.54738" width="1" height="1" depth="1" color="yellow" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c1" position="60.73338 1.0258 -160.89078" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c4" position="60.73338 1.0258 -31.0218" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c5" position="-94.20822 1.0258 -160.73122" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c6" position="-206.72066 1.0258 -152.76797" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c7" position="-111.22682 1.0258 -31.0218" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c8" position="-201.053 1.0258 65.06896" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c9" position="-201.053 1.0258 158.21352" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c10" position="-38.08063 1.0258 159.86617" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c11" position="121.25975 1.0258 156.99391" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="c12" position="207.67924 1.0258 65.06896" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box> 
+      <a-box static-body="sphereRadius: NaN" id="c13" position="95.08433 1.0258 32.09651" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>      
+      
+      <!-- Carro -->    
+      <a-entity dynamic-body="mass: 1; linearDamping: 1; angularDamping: 1" position="50 0.43002 0" rotation="0 90 0" id="carro">          <a-box id="hitbox" width="1" height="0.5" depth="2" position="-0.08128 0.04736 0.00866" rotation="0 90 0" color="#ffffff" material="src: img/pintura.jpg" geometry="height: 0.39; width: 1.1"></a-box>
           <a-box width="1" height="0.5" depth="2" position="-0.24707 0.40685 0.00866" rotation="0 90 0" color="#ffffff" geometry="depth: 1.07; height: 0.34; width: 0.95" material="src: img/pintura.jpg"></a-box>
           <a-box width="1" height="0.5" depth="2" position="0.30677 0.39414 0.01435" rotation="0 90 0" color="#4CC3D9" geometry="depth: 0.08; height: 0.21; width: 0.82" material="color: #ffffff"></a-box>
           <a-box width="1" height="0.5" depth="2" position="-0.989 0.33422 0.00866" rotation="-20 90 0" color="#5FC7D9" geometry="depth: 0.1; height: 0.34; width: 0.95" material="src: img/pintura.jpg"></a-box>
@@ -43,13 +72,12 @@
           <a-entity camera="" position="-5 1.4 0" rotation="0 -90 0" id="camera"></a-entity>
       </a-entity>
 
-      <a-sky color="#ECECEC" src="img/ceu.jpg"></a-sky>
-      <script src="app.js" type="module"></script>
+      <a-sky color="#9C8C9C" src="img/Ceu.png"></a-sky>
+      <script pixel-art static-body src="app.js" type="module"></script>
     </a-scene>
   </body>
 
   <div style="position: fixed; bottom: 10px; left: 10px; color: white; font-family: Arial; font-size: 12px; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px; z-index: 100;">
-    Tire and track textures by Freepik (www.freepik.com)<br>
     Game by Kauê Jales
   </div>
 </html>
