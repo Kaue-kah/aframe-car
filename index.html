@@ -27,7 +27,6 @@
       <p id="status" style="margin: 5px 0 0 0; font-weight: bold; color: orange;">Carregando...</p>
     </header>
     
-    
     <div style="position: fixed; bottom: 10px; right: 10px; width: 400px; height: 250px; border: 2px solid blueviolet; border-radius: 8px; overflow: hidden; z-index: 100; background: black;">
         <video id="webcam" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
         <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: scaleX(-1);"></canvas>
@@ -37,9 +36,15 @@
       <!-- <a-plane static-body src="img/NovaPista.png" position="0 0 0" rotation="-90 0 0" width="512" height="416" color="#ffffff"></a-plane> -->
       <a-plane pixel-art static-body src="img/NovaPista.png" position="0 0 0" rotation="-90 0 0" width="512" height="416" color="#ffffff"></a-plane>
       <!-- Obstáculos -->
-      <a-box static-body id="obs1" position="5 0.5 -3"  width="1" height="1" depth="1" color="orange"></a-box>
-      <a-box static-body id="obs2" position="-4 0.5 2"  width="1" height="1" depth="1" color="red"></a-box>
-
+      <!-- <a-box static-body="sphereRadius: NaN" id="obs1" position="50.2852 0.5 -32.29009" width="1" height="1" depth="1" color="red" velocity=""></a-box> -->
+      <!-- <a-box static-body="sphereRadius: NaN" id="obs1" position="50.2852 0.5 -32.29009" width="1" height="1" depth="1" color="red" velocity="" geometry="width: 7.7"></a-box>
+      <a-box static-body="sphereRadius: NaN" id="obs2" position="50.20141 0.5 -14.13908" width="1" height="1" depth="1" color="red" geometry="depth: 4; height: 4; width: 4" velocity=""></a-box> -->
+      <a-box static-body="sphereRadius: NaN" id="obs1" position="227.3152 0.5 -32.26283" width="1" height="1" depth="1" color="red" geometry="depth: 4; height: 4; width: 4" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="obs2" position="226.02251 0.5 -27.32054" width="1" height="1" depth="1" color="red" geometry="depth: 4; height: 4; width: 4" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="obs3" position="223.88518 0.5 -22.67418" width="1" height="1" depth="1" color="red" geometry="depth: 4; height: 4; width: 4" velocity=""></a-box>
+      <a-box static-body="sphereRadius: NaN" id="obs4" position="222.6261 0.5 -17.43697" width="1" height="1" depth="1" color="red" geometry="depth: 4; height: 4; width: 4" velocity=""></a-box>
+      
+      <a-box width="1" height="1" depth="160"></a-box>
       <!-- Coletáveis -->
       <a-box static-body="sphereRadius: NaN" id="c2" position="205.73217 1.69044 -40.0421" width="1" height="1" depth="1" color="blue" geometry="primitive: dodecahedron" velocity=""></a-box>
       <a-box static-body="sphereRadius: NaN" id="c3" position="206.89163 1.13069 -145.54738" width="1" height="1" depth="1" color="yellow" geometry="primitive: dodecahedron" velocity=""></a-box>

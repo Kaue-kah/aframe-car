@@ -1,10 +1,7 @@
 // O QUE FALTA:
 /*
-    - Adicionar os blocos e as paredes 
-    - Adicionar a ré
-    - Mudar a pista (?)
-    - Sla fi 
-    - Adicionar um timer a partir do primeiro, e conta até pegar todos
+    - Adicionar os blocos
+    - Adicionar a ré 
 */
 
 import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs";
@@ -32,6 +29,8 @@ let maos = [];
 const obstaculos = [
     document.getElementById("obs1"),
     document.getElementById("obs2"),
+    document.getElementById("obs3"),
+    document.getElementById("obs4"),
 ];
 
 const coletaveis = [
@@ -125,9 +124,9 @@ function detectarMaos(){
         const mao2 = maos[1];
 
         const maoFechada = verificarMaoFechada(mao1) && verificarMaoFechada(mao2);
-
+        const maoAberta = verificarMaoAberta(mao1) && verificarMaoAberta(mao2);
+        
         if (maoFechada){
-            console.log("ativou");
             w = true;
             const maoDireita = mao1[4].x > mao2[4].x ? mao1 : mao2;
             const maoEsquerda = maoDireita === mao1 ? mao2 : mao1;
@@ -139,23 +138,43 @@ function detectarMaos(){
                 if (yDireita < yEsquerda) {
                     d = true;
                     a = false;
-                    console.log("Mão Direita está mais ALTA que a Mão Esquerda");
-                    console.log("Inclinação: " + (yDireita - yEsquerda).toFixed(2));
                 } else {
                     a = true;
                     d = false;
-                    console.log("Mão Esquerda está mais ALTA que a Mão Direita");
-                    console.log("Inclinação: " + (yDireita - yEsquerda).toFixed(2));
                 }   
             }
             else {
-                console.log("Sem inclinação"); 
                 a = false;
                 d = false;
             }
         } else {
             w = false;
-            console.log("desativou");
+        }
+
+        if (maoAberta){
+            s = true;
+            const maoDireita = mao1[4].x > mao2[4].x ? mao1 : mao2;
+            const maoEsquerda = maoDireita === mao1 ? mao2 : mao1;
+
+            const yDireita = maoDireita[4].y;
+            const yEsquerda = maoEsquerda[4].y;
+            
+            if (Math.abs(yDireita - yEsquerda) > 0.08) {
+                if (yDireita < yEsquerda) {
+                    d = true;
+                    a = false;
+                } else {
+                    a = true;
+                    d = false;
+                }   
+            }
+            else {
+                a = false;
+                d = false;
+            }
+        }
+        else {
+            s = false;
         }
     } 
     else {
@@ -180,7 +199,7 @@ function checarColisao() {
         const distanciaX = Math.abs(posicaoCarro.x - posicaoObstaculo.x);
         const distanciaZ = Math.abs(posicaoCarro.z - posicaoObstaculo.z);
 
-        if (distanciaX < 1 && distanciaZ < 1) return true;
+        if (distanciaX < 3.4 && distanciaZ < 3.4) return true;
     }
     return false;
 }
@@ -207,7 +226,6 @@ function checarColetaveis() {
     }
 }
 
-
 function keyPressed(e) {
     if (e.key == 'w' || e.key == 'W') w = true;
     if (e.key == 's' || e.key == 'S') s = true;
@@ -228,9 +246,6 @@ document.addEventListener('keyup', keyOut);
 function update() {
     const obj = car.object3D;
 
-    // if (vel > 0) vel -= 0.001;
-    // if (vel < 0) vel += 0.001;
-
     if (a == false && rotacao > 0) rotacao -= 0.002;
     if (d == false && rotacao < 0) rotacao += 0.002;
 
@@ -238,8 +253,8 @@ function update() {
     if (a) { if (rotacao < 0.03) rotacao += 0.002;}
     if (d){ if (rotacao > -0.03) rotacao -= 0.002;}
 
-    if (w){if (vel < 0.6) vel += 0.05;}
-    if (s){if (vel > -0.6) vel -= 0.05;}
+    if (w){if (vel < 0.6) vel += 0.02;}
+    if (s){if (vel > -0.6) vel -= 0.03;}
     
     if (!w && !s) {
         if (Math.abs(vel) < 0.001) vel = 0;
@@ -273,6 +288,16 @@ function verificarMaoFechada(mao) {
     const acimaMedio     = yPolegar < mao[12].y;
     const acimaAnelar    = yPolegar < mao[16].y;
     const acimaMinimo    = yPolegar < mao[20].y;
+
+    return acimaIndicador || acimaMedio || acimaAnelar || acimaMinimo;
+}
+
+function verificarMaoAberta(mao) {
+    const yPolegar = mao[4].y;
+    const acimaIndicador = yPolegar > mao[8].y;
+    const acimaMedio     = yPolegar > mao[12].y;
+    const acimaAnelar    = yPolegar > mao[16].y;
+    const acimaMinimo    = yPolegar > mao[20].y;
 
     return acimaIndicador || acimaMedio || acimaAnelar || acimaMinimo;
 }
