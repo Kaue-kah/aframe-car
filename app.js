@@ -1,9 +1,3 @@
-// O QUE FALTA:
-/*
-    - Adicionar os blocos
-    - Adicionar a ré 
-*/
-
 import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs";
 const video = document.getElementById("webcam");
 const canvas = document.getElementById("canvas");
@@ -21,16 +15,45 @@ let pontos = 0;
 let vel = 0.1;
 let rotacao = 0;
 let jogoIniciado = false;
-let inclinacaoVolante = 1;
 
 let handLandmarker = null;
-let maos = [];
 
 const obstaculos = [
     document.getElementById("obs1"),
     document.getElementById("obs2"),
     document.getElementById("obs3"),
     document.getElementById("obs4"),
+    document.getElementById("obs5"),
+    document.getElementById("obs6"),
+    document.getElementById("obs7"),
+    document.getElementById("obs8"),
+    document.getElementById("obs9"),
+    document.getElementById("obs10"),
+    document.getElementById("obs11"),
+    document.getElementById("obs12"),
+    document.getElementById("obs13"),
+    document.getElementById("obs14"),
+    document.getElementById("obs15"),
+    document.getElementById("obs16"),
+    document.getElementById("obs17"),
+    document.getElementById("obs18"),
+    document.getElementById("obs19"),
+    document.getElementById("obs20"),
+    document.getElementById("obs21"),
+    document.getElementById("obs22"),
+    document.getElementById("obs23"),
+    document.getElementById("obs24"),
+    document.getElementById("obs25"),
+    document.getElementById("obs26"),
+    document.getElementById("obs27"),
+    document.getElementById("obs28"),
+    document.getElementById("obs29"),
+    document.getElementById("obs30"),
+    document.getElementById("obs31"),
+    document.getElementById("obs32"),
+    document.getElementById("obs33"),
+    document.getElementById("obs34"),
+    document.getElementById("obs35")
 ];
 
 const coletaveis = [
@@ -89,7 +112,6 @@ video.addEventListener("loadeddata", () => {
     detectarMaos();
 });
 
-
 function detectarMaos(){
     if (!handLandmarker){
         requestAnimationFrame(detectarMaos);
@@ -125,64 +147,39 @@ function detectarMaos(){
 
         const maoFechada = verificarMaoFechada(mao1) && verificarMaoFechada(mao2);
         const maoAberta = verificarMaoAberta(mao1) && verificarMaoAberta(mao2);
-        
-        if (maoFechada){
-            w = true;
+
+        w = maoFechada;
+        s = maoAberta;
+
+        if (maoFechada || maoAberta) {
             const maoDireita = mao1[4].x > mao2[4].x ? mao1 : mao2;
             const maoEsquerda = maoDireita === mao1 ? mao2 : mao1;
+            const diferenca = maoDireita[4].y - maoEsquerda[4].y;
 
-            const yDireita = maoDireita[4].y;
-            const yEsquerda = maoEsquerda[4].y;
-            
-            if (Math.abs(yDireita - yEsquerda) > 0.08) {
-                if (yDireita < yEsquerda) {
-                    d = true;
-                    a = false;
-                } else {
-                    a = true;
-                    d = false;
-                }   
-            }
-            else {
+            if (Math.abs(diferenca) > 0.08) {
+                d = diferenca < 0;
+                a = diferenca > 0;
+            } else {
                 a = false;
                 d = false;
             }
-        } else {
-            w = false;
+        } 
+        else 
+        {
+            w = false; 
+            s = false; 
+            a = false; 
+            d = false;  
         }
 
-        if (maoAberta){
-            s = true;
-            const maoDireita = mao1[4].x > mao2[4].x ? mao1 : mao2;
-            const maoEsquerda = maoDireita === mao1 ? mao2 : mao1;
-
-            const yDireita = maoDireita[4].y;
-            const yEsquerda = maoEsquerda[4].y;
-            
-            if (Math.abs(yDireita - yEsquerda) > 0.08) {
-                if (yDireita < yEsquerda) {
-                    d = true;
-                    a = false;
-                } else {
-                    a = true;
-                    d = false;
-                }   
-            }
-            else {
-                a = false;
-                d = false;
-            }
-        }
-        else {
-            s = false;
-        }
-    } 
-    else {
-        w = false;
-        s = false;
-        a = false;
-        d = false;
+    } else
+        {
+        w = false; 
+        s = false; 
+        a = false; 
+        d = false;  
     }
+
 
     requestAnimationFrame(detectarMaos);
 }
@@ -273,7 +270,6 @@ function update() {
             for (let i = 0; i < rodas.length; i++) rodas[i].object3D.rotateY( 0.25 * vel * 600 );
         }
     }
-    // HUB
     pontuacao.innerText = `${pontos}/13`;
     velocidade.innerText = `${((vel / 0.4) * 100).toFixed(0)} km/h`;    
     taxaInclinacao.innerText = `${(rotacao * (180 / Math.PI)).toFixed(2)}°`;
@@ -302,11 +298,10 @@ function verificarMaoAberta(mao) {
     return acimaIndicador || acimaMedio || acimaAnelar || acimaMinimo;
 }
 
+document.querySelector('a-scene').addEventListener('loaded', () => {
+    jogoIniciado = true;
+});
 
 iniciarCamera();
 carregarModelo();
 update();
-
-document.querySelector('a-scene').addEventListener('loaded', () => {
-    jogoIniciado = true;
-});
