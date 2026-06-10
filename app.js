@@ -159,8 +159,8 @@ function detectarMaos(){
             if (Math.abs(diferenca) > 0.08) {
                 d = diferenca < 0;
                 a = diferenca > 0;
-            } else {
-                a = false;
+                a = false;            } else {
+
                 d = false;
             }
         } 
@@ -271,6 +271,9 @@ function update() {
         }
     }
     pontuacao.innerText = `${pontos}/13`;
+    if (pontos == 13){ 
+        pontuacao.innerText.color = "green"
+    }
     velocidade.innerText = `${((vel / 0.4) * 100).toFixed(0)} km/h`;    
     taxaInclinacao.innerText = `${(rotacao * (180 / Math.PI)).toFixed(2)}°`;
 
